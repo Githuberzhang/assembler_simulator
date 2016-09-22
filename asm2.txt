@@ -1,0 +1,42 @@
+#将用户输入的十进制数转换成16进制数
+LOADI C 10		#每次循环乘以10,并且是windows下的enter键的ascii码
+LOADI A 0		#保存输入或输出的值
+LOADI D 16		#十六进制
+LOADI B 10		#用于判断
+getnum:	  IN F 0	#输入输入的值
+ 	  EQU F C	#判断是否为enter键，是则进入loop1
+	  CJMP loop1
+ 	  SUBI F 48	#将字符转换成数字
+	  MUL A A C	#A = A * 10，算出高位
+	  ADD A A F	#A加上低位，得到数A
+	  JMP getnum
+
+loop1:    DIV E A D 	#算A除以16得到结果存到E
+	  MUL F D E 	#算出16*E
+	  SUB F A F 	#算出余数
+	  PUSH F    	#将余数压栈
+	  ADDI G 1  	#得到一个余数就计数
+	  ADD A E Z 	#把余数赋值给A
+	  LT Z A    	#判断0和A的值的大小
+	  CJMP loop1	#0<A则进入循环
+
+loop2:	  POP A		#将A出栈
+	  LTE B A	#判断10<=A
+	  CJMP ext	#结果为真则进入ext
+	  LT A B	#判断A<10
+	  CJMP extra	#结果为真进入extra
+back:	  SUBI G 1	#计数减一
+	  LT Z G	#判断计数是否到0
+	  CJMP loop2	#计数比0大则继续循环
+	
+	  HLT
+
+ext:	  ADDI A 55	#将A变成'A'-'F'字母
+	  OUT A 15	#输出A
+	  SUBI A 55	#还原A
+	  JMP back	#跳转回到源程序
+
+extra:	  ADDI A 48	#将A变成'0'-'9'字符
+	  OUT A 15	#输出A
+	  SUBI A 48	#还原A
+	  JMP back	#跳转回到源程序

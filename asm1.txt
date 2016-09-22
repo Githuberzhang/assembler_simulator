@@ -1,0 +1,31 @@
+#求1+2+...+100
+#先求A的值，5050
+        LOADI	A   0       #初始化A=0
+        LOADI	B   1       
+        LOADI	C   100     
+        LOADI	D   10
+        LOADI	E   30
+
+loop1:  ADD     A   A   B
+        ADDI    B   1
+        LTE     B   C       #比较B的值小于等于100
+        CJMP    loop1       #为真则执行循环
+
+#输出A的值
+loop2:  DIV     E   A   D   
+        MUL     F   D   E
+        SUB     F   A   F
+        PUSH    F
+        ADDI    G   1
+        ADD     A   E   Z
+        LT      Z   A
+        CJMP    loop2
+
+loop3:  POP     A
+        ADDI    A   48
+        OUT     A   15
+        SUBI    G   1
+        LT      Z   G
+        CJMP    loop3
+        
+        HLT
