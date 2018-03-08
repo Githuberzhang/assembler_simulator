@@ -1,10 +1,8 @@
-Created by ZhangMing All Rights Reserverd
-
 ## assembler
-assembler.c     assembler.h为编译器
+assembler.c     assembler.h
 
 ## simulator
-simulator.c     simulator.h为模拟器
+simulator.c     simulator.h
 
 ## work
 - assembler将汇编源代码译码为16进制的txt文件
